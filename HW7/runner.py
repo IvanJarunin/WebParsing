@@ -10,9 +10,9 @@ if __name__ == "__main__":
     crawler_settings.setmodule(settings)
 
     # TODO: customize it
-    search = input('Введите товар (если не введете, то выполнится поиск плитки):')
+    search = input('Введите товар (по умолчанию обои):')
     if not search:
-        search = 'плитка'
+        search = 'обои'
     process = CrawlerProcess(settings=crawler_settings)
     process.crawl(LeroySpider, query=search)
     process.start()
