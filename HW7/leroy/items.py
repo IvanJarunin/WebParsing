@@ -1,8 +1,3 @@
-# Define here the models for your scraped items
-#
-# See documentation in:
-# https://docs.scrapy.org/en/latest/topics/items.html
-
 import scrapy
 from scrapy.loader.processors import Compose, MapCompose, TakeFirst
 from lxml import html
@@ -18,7 +13,6 @@ def clean_strings(string_array):
 
 
 def def_dict_json(def_list):
-    # print(def_list)
     try:
         def_result_dict = {}
         for element in def_list:
@@ -46,7 +40,6 @@ def int_val(string):
         return None
 
 
-# Леруа
 class LeroyItem(scrapy.Item):
     article_number = scrapy.Field(output_processor=TakeFirst())
     url = scrapy.Field(output_processor=TakeFirst())
