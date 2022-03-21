@@ -1,8 +1,6 @@
-# import response as response
 import scrapy
 from scrapy.http import TextResponse
 from scrapy.loader import ItemLoader
-
 from leroy.items import LeroyItem
 
 
@@ -10,7 +8,7 @@ class LeroySpider(scrapy.Spider):
     name = "leroymerlin"
     allowed_domains = ["leroymerlin.ru"]
     start_urls = [
-        "https://leroymerlin.ru/search/?q=плитка",
+        "https://leroymerlin.ru/search/?q=обои",
     ]
 
     def __init__(self, query):
@@ -27,9 +25,7 @@ class LeroySpider(scrapy.Spider):
         small_images_xpath = './/picture//source//@data-origin'
         def_list_xpath = './/dl[@class="def-list"]//div[@class="def-list__group"]'
 
-        # print(len(response.xpath(small_images_xpath)))
         loader = ItemLoader(item=LeroyItem(), response=response)
-
         loader.add_xpath("article_number", article_xpath)
         loader.add_value("url", response.url)
         loader.add_xpath("title", title_xpath)
@@ -49,7 +45,7 @@ class LeroySpider(scrapy.Spider):
             url = response.urljoin(href)
             print(url)
             yield response.follow(url, callback=self.parse_item)
-        # pagination
+            
         next_url = response.xpath('.//a[@data-qa-pagination-item="right"]/@href').get()
         if next_url:
             yield response.follow(next_url, callback=self.parse)
