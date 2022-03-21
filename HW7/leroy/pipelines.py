@@ -1,12 +1,4 @@
-# Define your item pipelines here
-#
-# Don't forget to add your pipeline to the ITEM_PIPELINES setting
-# See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-
-
-# useful for handling different item types with a single interface
 import hashlib
-
 import scrapy
 import pymongo
 from itemadapter import ItemAdapter
@@ -16,8 +8,7 @@ from scrapy.pipelines.images import ImagesPipeline
 
 class LeroyImagesPipeline(ImagesPipeline):
 
-    def file_path(self, request, response=None, info=None, *, item=None, article_num=None):
-        # для каждого продукта создается папка с номером артикула и туда сохраняются фотографии
+    def file_path(self, request, response=None, info=None, *, item=None, article_num=None):      
         image_name = request.url.split('/')[-1]
         folder_name = image_name.split('.')[0].split('_')[0]
         return f'full/{folder_name}/{image_name}'
@@ -66,9 +57,7 @@ class LeroyParserPipeline:
     def process_item(self, item, spider):
         print("PROCESS_ITEM")
         print(item)
-        # TODO: write code for MongoDB
         item_dict = ItemAdapter(item).asdict()
-        # self.db[self.mongo_collection].insert_one(item_dict)
         self.db[self.mongo_collection].update_one(
             {"article_number": item_dict["article_number"]},
             {"$set": item_dict},
